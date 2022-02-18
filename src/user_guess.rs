@@ -61,7 +61,7 @@ mod tests {
 
     #[test]
     fn test_is_guess_valid() {
-        let wordbank = WordBank::init().unwrap();
+        let wordbank = WordBank::init();
         let guess: [&str; 5] = [
             "longest",
             "absc5",

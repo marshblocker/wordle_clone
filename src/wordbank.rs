@@ -2,37 +2,28 @@ extern crate rand;
 
 use rand::{thread_rng, Rng};
 
-use std::io;
-use std::io::prelude::*;
-use std::io::BufReader;
-use std::fs::File;
-
-use crate::constants::{UNKNOWN_WORDS_PATH, ALLOWED_WORDS_PATH};
-
 pub struct WordBank {
     unknown_words: Vec<String>,
     allowed_words: Vec<String>,
 }
 
 impl WordBank {
-    pub fn init() -> Result<WordBank, io::Error> {
-        let file = File::open(UNKNOWN_WORDS_PATH)?;
-        let reader = BufReader::new(file);
-        
+    pub fn init() -> WordBank {
+        let unknown_words_str: &str = include_str!("unknown_words.txt");
         let mut unknown_words: Vec<String> = Vec::new();
-        for line in reader.lines().map(|l| l.unwrap()) {
-            unknown_words.push(line);
-        }
-        
-        let file = File::open(ALLOWED_WORDS_PATH)?;
-        let reader = BufReader::new(file);
-        
-        let mut allowed_words: Vec<String> = Vec::new();
-        for line in reader.lines().map(|l| l.unwrap()) {
-            allowed_words.push(line);
+
+        for line in unknown_words_str.lines() {
+            unknown_words.push(line.to_string());
         }
 
-        Ok(WordBank { unknown_words, allowed_words })
+        let allowed_words_str: &str = include_str!("allowed_words.txt");
+        let mut allowed_words: Vec<String> = Vec::new();
+
+        for line in allowed_words_str.lines() {
+            allowed_words.push(line.to_string());
+        }
+
+        WordBank { unknown_words, allowed_words }
     }
 
     pub fn get_unknown_words(&self) -> &Vec<String> {
@@ -74,7 +65,7 @@ mod tests {
     
     #[test]
     fn test_in_unknown_words() {
-        let wordbank = WordBank::init().unwrap();
+        let wordbank = WordBank::init();
 
         let correct_words: [&str; 5] = [
             "aback",
@@ -103,7 +94,7 @@ mod tests {
 
     #[test]
     fn test_in_allowed_words() {    
-        let wordbank = WordBank::init().unwrap();
+        let wordbank = WordBank::init();
     
         let correct_words: [&str; 4] = [
             // "aahed",

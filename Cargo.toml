@@ -1,7 +1,7 @@
 [package]
 name = "wordle_clone"
 description = "Wordle as a CLI app."
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 authors = ["Gabriel Kenneth L. Marinas <gabrielkennethmarinas@gmail.com>"]
 keywords = ["cli", "game", "puzzle"]

@@ -6,15 +6,23 @@ Own implementation of Wordle as a CLI app.
 ![Won](src/images/won.png "Sample Image 2")
 ![Lost](src/images/lost.png "Sample Image 3")
 
+## Note
+This program doesn't display properly in Window's Command Prompt due to the terminal's 
+lack of native color features. If you're in Windows, you can run this smoothly in the 
+built-in Powershell or in Git Bash if you have it.
+
 ## How to Build
 ```
-git clone https://github.com/marshblocker/wordle_clone.git
+cargo install wordle_clone
 ```
 
 ## How to Play
-* Within the `wordle_clone` directory, run `cargo run` to start the game.
+* Run `wordle_clone` in the command-line.
 * If you're not familiar with the game, 
   Press `H` at the start of the game to view the game mechanics.
+
+## What's new with version 0.1.3
+* Can now install a native executible via `cargo install wordle_clone`.
 
 ## Dependencies
 The _colored_ library for providing convenience function for printing colored
