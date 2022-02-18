@@ -14,11 +14,7 @@ fn main() {
     Display::clear_screen();
 
     let mut display: Display = Display::init();
-    let wordbank = WordBank::init()
-                            .unwrap_or_else(|err| {
-                                eprintln!("{}", err);
-                                process::exit(1);
-                            });
+    let wordbank = WordBank::init();
                            
     let mut winner: IfWinner = false;
 
