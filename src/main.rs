@@ -5,8 +5,7 @@ extern crate colored;
 use std::process;
 
 use wordle_clone::wordbank::{WordBank};
-use wordle_clone::user_guess;
-use wordle_clone::guess_processor::{process_guess, IfWinner};
+use wordle_clone::user_guess::{self, IfWinner};
 use wordle_clone::display::{self, Display, GuessColorMapping};
 use wordle_clone::constants::MAX_GUESSES;
 
@@ -35,7 +34,7 @@ fn main() {
                                                         eprintln!("{}", err);
                                                         process::exit(1);
                                                     });
-        let (gcm, winner_temp): (GuessColorMapping, IfWinner) = process_guess(
+        let (gcm, winner_temp): (GuessColorMapping, IfWinner) = user_guess::process_guess(
             &guess, &unknown_word, &mut display);
 
         winner = winner_temp;

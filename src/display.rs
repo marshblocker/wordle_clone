@@ -6,7 +6,7 @@ use std::io;
 use std::{thread, time};
 
 use crate::constants::{WORD_LENGTH, MAX_GUESSES};
-use crate::guess_processor::IfWinner;
+use crate::user_guess::IfWinner;
 use crate::err::AppError;
 
 pub type LetterColorMapping = (char, FontColors);
