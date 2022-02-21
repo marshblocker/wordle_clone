@@ -5,6 +5,7 @@ use crate::display::{GuessColorMapping, FontColors, Display};
 use crate::constants::WORD_LENGTH;
 use crate::wordbank::WordBank;
 use crate::err::AppError;
+use crate::utils;
 
 pub type IfWinner = bool;
 
@@ -71,6 +72,26 @@ pub fn process_guess(
     }
 
     (gcm, ifwinner)
+}
+
+pub fn get_username() -> String {
+    let username = loop {
+        let mut username = String::new();
+
+        println!("Input a 5-character username: ");
+        io::stdin().read_line(&mut username).expect("Failed to get username.");
+
+        let username = username.trim();
+        
+        if username.len() != 5 {
+            println!("Username must have 5 characters only!\n");
+        } else { break username.to_string(); }
+    };
+
+    println!("Your username: {}", username);
+    utils::sleep_sec(1);
+    
+    username
 }
 
 fn is_guess_valid(
