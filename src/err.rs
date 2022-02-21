@@ -1,3 +1,5 @@
+// User-visible errors.
+
 use std::fmt;
 
 #[derive(PartialEq)]

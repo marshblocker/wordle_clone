@@ -3,11 +3,12 @@ extern crate colored;
 use colored::*;
 
 use std::io;
-use std::{thread, time};
 
 use crate::constants::{WORD_LENGTH, MAX_GUESSES};
-use crate::user_guess::IfWinner;
+use crate::user_input::IfWinner;
 use crate::err::AppError;
+use crate::highscore::UserScore;
+use crate::utils;
 
 pub type LetterColorMapping = (char, FontColors);
 pub type GuessColorMapping = [LetterColorMapping; WORD_LENGTH];
@@ -100,11 +101,30 @@ impl Display {
     }
 }
 
-pub fn display_start_screen() -> char {
+pub fn display_high_score(high_scores: &[UserScore]) {
+    println!("\t\t{:=^30}\n", "HIGHSCORES");
+    
+    if high_scores.is_empty() {
+        println!("\t\t{: ^30}\n", "No high scores yet!");
+    } else {
+        for (i, high_score) in high_scores.iter().enumerate() {
+            println!(
+                "\t\t{}. {} {}", 
+                i+1, high_score.get_username(), high_score.get_score()
+            );
+        }
+        println!(" ");
+    }
+
+    println!("\t\t{:=^30}\n", "");
+}
+
+pub fn display_start_screen(high_scores: &[UserScore]) -> char {
     println!("\nLet's play Wordle!\n");
+    display_high_score(high_scores);
     println!(
-        "Press {} to play the game or press {} to display the mechanics of the game.\n", 
-        "P".underline(), "H".underline() 
+        "Press {} to play the game, press {} to display the mechanics of the game, or press {} to exit the game.\n", 
+        "P".underline(), "H".underline(), "Q".underline() 
     );
     
     loop {
@@ -114,7 +134,7 @@ pub fn display_start_screen() -> char {
           .read_line(&mut command)
           .expect("Error reading input.");
 
-        match is_command_valid(&command, vec!['P', 'H']) {
+        match is_command_valid(&command, vec!['P', 'H', 'Q']) {
             Ok(cmd) => return cmd,
             Err(err) => eprintln!("{}\n", err),
         }
@@ -122,7 +142,7 @@ pub fn display_start_screen() -> char {
 }
 
 pub fn display_help() {
-    clear_screen();
+    utils::clear_screen();
 
     println!("
     Game Mechanics: Guess the five-letter word in five tries. \
@@ -170,10 +190,8 @@ pub fn display_guesses_left(guesses_left: u8) {
 pub fn display_end_screen(winner: IfWinner, unknown_answer: &str) {
     const WSPACE: u16 = 100;
 
-    let sleep_sec = time::Duration::from_secs(3);
-    thread::sleep(sleep_sec);
-
-    clear_screen();
+    utils::sleep_sec(3);
+    utils::clear_screen();
 
     let mut n = match winner {
         true   => 0,
@@ -186,9 +204,8 @@ pub fn display_end_screen(winner: IfWinner, unknown_answer: &str) {
         } else if !winner && n == 0 {
             n = WSPACE;
         }
-        
-        let sleep_milli = time::Duration::from_millis(75);
-        thread::sleep(sleep_milli);
+
+        utils::sleep_ms(75);
 
         for _ in 0..n {
             print!(" ");
@@ -205,11 +222,6 @@ pub fn display_end_screen(winner: IfWinner, unknown_answer: &str) {
         if winner { n += 1; } else { n -= 1; }
     }
 }
-
-pub fn clear_screen() {
-    println!("{esc}[2J{esc}[1;1H", esc = 27 as char);
-}
-
 
 fn is_command_valid(command: &str, valid_commands: Vec<char>) -> Result<char, String> {
     let command: char = match command.trim().parse() {
