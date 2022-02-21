@@ -6,9 +6,9 @@ Own implementation of Wordle as a CLI app.
 ![Won](src/images/during.png "Sample Image 2")
 
 ## Note
-This program doesn't display properly in Window's Command Prompt due to the terminal's 
-lack of native color features. If you're in Windows, you can run this smoothly in the 
-built-in Powershell or in Git Bash if you have it.
+Running this program in Window's Command Prompt may display unsatisfactory visuals.
+If you're running this in Windows, use Powershell (built-in in Windows 10) or other
+terminal emulator apps such as Git Bash.
 
 ## How to Build
 ```
