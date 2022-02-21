@@ -22,6 +22,7 @@ fn main() {
 
     let mut guesses_left = MAX_GUESSES;
     let unknown_word: String = wordbank.get_random_word_in_unknown_words();
+    dbg!(&unknown_word);
 
     let cmd: char = display::display_start_screen(highscore.get_high_scores());
     match cmd {
